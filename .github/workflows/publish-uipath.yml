@@ -6,18 +6,6 @@ on:
       - main
       - master
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'UiPath Environment (e.g., Cloud, OnPremise)'
-        required: false
-        default: 'Cloud'
-
-env:
-  UIPATH_ORCHESTRATOR_URL: ${{ secrets.UIPATH_ORCHESTRATOR_URL }}
-  UIPATH_TENANT: ${{ secrets.UIPATH_TENANT }}
-  UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
-  UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
-  UIPATH_ACCOUNT_LOGICAL_NAME: ${{ secrets.UIPATH_ACCOUNT_LOGICAL_NAME }}
 
 jobs:
   publish:
@@ -46,36 +34,36 @@ jobs:
 
       - name: Upload Solution Package
         run: |
-          uipcli solution upload-package ./packages/*.nupkg \
-            --clientId "$UIPATH_CLIENT_ID" \
-            --clientSecret "$UIPATH_CLIENT_SECRET" \
-            --accountName "$UIPATH_ACCOUNT_LOGICAL_NAME" \
-            --tenant "$UIPATH_TENANT" \
-            --applicationScope "SM.Solutions.Read SM.Solutions.Write"
+          uipcli solution upload-package ./packages/*.zip \
+            -U ${{ secrets.ORCHESTRATOR_URL }} \
+            -T ${{ secrets.ORCHESTRATOR_TENANT }} \
+            -A ${{ secrets.ORG_NAME }} \
+            -I ${{ secrets.EXTERNAL_APP_ID }} \
+            -S ${{ secrets.EXTERNAL_APP_SECRET }} \
+            --applicationScope "AutomationSolutions Solutions.Packages Solutions.Packages.Write"
 
       - name: Deploy Solution
         run: |
-          uipcli solution deploy \
-            --solutionName "CityBreak Process" \
-            --solutionVersion "1.0.${{ github.run_number }}" \
-            --targetEnvironment "${{ secrets.UIPATH_TARGET_ENVIRONMENT }}" \
-            --clientId "$UIPATH_CLIENT_ID" \
-            --clientSecret "$UIPATH_CLIENT_SECRET" \
-            --accountName "$UIPATH_ACCOUNT_LOGICAL_NAME" \
-            --tenant "$UIPATH_TENANT" \
-            --applicationScope "SM.Solutions.Read SM.Solutions.Write"
+          uipcli solution deploy "CityBreak Process" \
+            -v "1.0.${{ github.run_number }}" \
+            -d "CityBreak-Process-v1.0.${{ github.run_number }}" \
+            -f ${{ secrets.ORCHESTRATOR_FOLDER }} \
+            -U ${{ secrets.ORCHESTRATOR_URL }} \
+            -T ${{ secrets.ORCHESTRATOR_TENANT }} \
+            -A ${{ secrets.ORG_NAME }} \
+            -I ${{ secrets.EXTERNAL_APP_ID }} \
+            -S ${{ secrets.EXTERNAL_APP_SECRET }} \
+            --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
 
       - name: Activate Deployment
         run: |
-          uipcli solution deploy-activate \
-            --solutionName "CityBreak Process" \
-            --solutionVersion "1.0.${{ github.run_number }}" \
-            --targetEnvironment "${{ secrets.UIPATH_TARGET_ENVIRONMENT }}" \
-            --clientId "$UIPATH_CLIENT_ID" \
-            --clientSecret "$UIPATH_CLIENT_SECRET" \
-            --accountName "$UIPATH_ACCOUNT_LOGICAL_NAME" \
-            --tenant "$UIPATH_TENANT" \
-            --applicationScope "SM.Solutions.Read SM.Solutions.Write"
+          uipcli solution deploy-activate "CityBreak-Process-v1.0.${{ github.run_number }}" \
+            -U ${{ secrets.ORCHESTRATOR_URL }} \
+            -T ${{ secrets.ORCHESTRATOR_TENANT }} \
+            -A ${{ secrets.ORG_NAME }} \
+            -I ${{ secrets.EXTERNAL_APP_ID }} \
+            -S ${{ secrets.EXTERNAL_APP_SECRET }} \
+            --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
 
       - name: Publish Summary
         if: always()
@@ -83,4 +71,4 @@ jobs:
           echo "## UiPath Solution Publishing Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Solution: CityBreak Process" >> $GITHUB_STEP_SUMMARY
           echo "- Version: 1.0.${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Environment: ${{ secrets.UIPATH_TARGET_ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Folder: ${{ secrets.ORCHESTRATOR_FOLDER }}" >> $GITHUB_STEP_SUMMARY
