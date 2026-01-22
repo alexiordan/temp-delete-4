@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:uipath="http://uipath.org/schema/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" id="x-uipath-initial-diagram" targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL" exporter="UiPath Studio Web (https://uipath.com)" exporterVersion="a3e2221b">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:uipath="http://uipath.org/schema/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="x-uipath-initial-diagram" targetNamespace="http://www.omg.org/spec/BPMN/20100524/MODEL" exporter="UiPath Studio Web (https://uipath.com)" exporterVersion="a3e2221b">
   <bpmn:process id="Process_1" name="Process" isExecutable="false">
     <bpmn:extensionElements>
       <uipath:migrationVersion version="8" />
@@ -8,7 +8,17 @@
       <bpmn:extensionElements>
         <uipath:entryPointId value="c31505a0-1801-489f-9c8c-9628d58c0f74" />
       </bpmn:extensionElements>
+      <bpmn:outgoing>edge_Event_start-Activity_NPAAyU</bpmn:outgoing>
     </bpmn:startEvent>
+    <bpmn:task id="Activity_NPAAyU">
+      <bpmn:incoming>edge_Event_start-Activity_NPAAyU</bpmn:incoming>
+      <bpmn:outgoing>edge_Activity_NPAAyU-Event_5EhWln</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Event_5EhWln">
+      <bpmn:incoming>edge_Activity_NPAAyU-Event_5EhWln</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="edge_Event_start-Activity_NPAAyU" sourceRef="Event_start" targetRef="Activity_NPAAyU" />
+    <bpmn:sequenceFlow id="edge_Activity_NPAAyU-Event_5EhWln" sourceRef="Activity_NPAAyU" targetRef="Event_5EhWln" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
@@ -18,6 +28,26 @@
           <dc:Bounds x="260" y="241" width="36" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_Activity_NPAAyU" bpmnElement="Activity_NPAAyU">
+        <dc:Bounds x="344" y="178" width="100" height="80" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="344" y="263" width="100" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="S_Event_5EhWln" bpmnElement="Event_5EhWln">
+        <dc:Bounds x="492" y="200" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="492" y="241" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_edge_Event_start-Activity_NPAAyU" bpmnElement="edge_Event_start-Activity_NPAAyU">
+        <di:waypoint x="296" y="218" />
+        <di:waypoint x="344" y="218" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_edge_Activity_NPAAyU-Event_5EhWln" bpmnElement="edge_Activity_NPAAyU-Event_5EhWln">
+        <di:waypoint x="444" y="218" />
+        <di:waypoint x="492" y="218" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
