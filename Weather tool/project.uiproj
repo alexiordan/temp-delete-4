@@ -1,0 +1,5 @@
+{
+  "Name": "Weather tool",
+  "ProjectType": "Process",
+  "MainFile": "Main.xaml"
+}
