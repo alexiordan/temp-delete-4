@@ -31,15 +31,19 @@ jobs:
           uipcli solution pack . \
             --output ./packages \
             --version "1.0.${{ github.run_number }}"
+          echo "Package contents:"
+          ls -la ./packages/
 
       - name: Upload Solution Package
         run: |
-          uipcli solution upload-package ./packages/*.zip \
-            -U ${{ secrets.ORCHESTRATOR_URL }} \
-            -T ${{ secrets.ORCHESTRATOR_TENANT }} \
-            -A ${{ secrets.ORG_NAME }} \
-            -I ${{ secrets.EXTERNAL_APP_ID }} \
-            -S ${{ secrets.EXTERNAL_APP_SECRET }} \
+          PACKAGE_FILE=$(find ./packages -name "*.zip" | head -1)
+          echo "Uploading package: $PACKAGE_FILE"
+          uipcli solution upload-package "$PACKAGE_FILE" \
+            -U "${{ secrets.ORCHESTRATOR_URL }}" \
+            -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
+            -A "${{ secrets.ORG_NAME }}" \
+            -I "${{ secrets.EXTERNAL_APP_ID }}" \
+            -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Packages Solutions.Packages.Write"
 
       - name: Deploy Solution
@@ -47,22 +51,22 @@ jobs:
           uipcli solution deploy "CityBreak Process" \
             -v "1.0.${{ github.run_number }}" \
             -d "CityBreak-Process-v1.0.${{ github.run_number }}" \
-            -f ${{ secrets.ORCHESTRATOR_FOLDER }} \
-            -U ${{ secrets.ORCHESTRATOR_URL }} \
-            -T ${{ secrets.ORCHESTRATOR_TENANT }} \
-            -A ${{ secrets.ORG_NAME }} \
-            -I ${{ secrets.EXTERNAL_APP_ID }} \
-            -S ${{ secrets.EXTERNAL_APP_SECRET }} \
+            -f "${{ secrets.ORCHESTRATOR_FOLDER }}" \
+            -U "${{ secrets.ORCHESTRATOR_URL }}" \
+            -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
+            -A "${{ secrets.ORG_NAME }}" \
+            -I "${{ secrets.EXTERNAL_APP_ID }}" \
+            -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
 
       - name: Activate Deployment
         run: |
           uipcli solution deploy-activate "CityBreak-Process-v1.0.${{ github.run_number }}" \
-            -U ${{ secrets.ORCHESTRATOR_URL }} \
-            -T ${{ secrets.ORCHESTRATOR_TENANT }} \
-            -A ${{ secrets.ORG_NAME }} \
-            -I ${{ secrets.EXTERNAL_APP_ID }} \
-            -S ${{ secrets.EXTERNAL_APP_SECRET }} \
+            -U "${{ secrets.ORCHESTRATOR_URL }}" \
+            -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
+            -A "${{ secrets.ORG_NAME }}" \
+            -I "${{ secrets.EXTERNAL_APP_ID }}" \
+            -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
 
       - name: Publish Summary
