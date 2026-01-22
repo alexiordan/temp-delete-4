@@ -1,0 +1,86 @@
+name: Publish UiPath Solution
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'UiPath Environment (e.g., Cloud, OnPremise)'
+        required: false
+        default: 'Cloud'
+
+env:
+  UIPATH_ORCHESTRATOR_URL: ${{ secrets.UIPATH_ORCHESTRATOR_URL }}
+  UIPATH_TENANT: ${{ secrets.UIPATH_TENANT }}
+  UIPATH_CLIENT_ID: ${{ secrets.UIPATH_CLIENT_ID }}
+  UIPATH_CLIENT_SECRET: ${{ secrets.UIPATH_CLIENT_SECRET }}
+  UIPATH_ACCOUNT_LOGICAL_NAME: ${{ secrets.UIPATH_ACCOUNT_LOGICAL_NAME }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install UiPath CLI (Latest - Linux)
+        run: |
+          dotnet tool install --global UiPath.CLI.Linux
+          echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+          uipcli --version
+
+      - name: Pack Solution
+        run: |
+          uipcli solution pack . \
+            --output ./packages \
+            --version "1.0.${{ github.run_number }}"
+
+      - name: Upload Solution Package
+        run: |
+          uipcli solution upload-package ./packages/*.nupkg \
+            --clientId "$UIPATH_CLIENT_ID" \
+            --clientSecret "$UIPATH_CLIENT_SECRET" \
+            --accountName "$UIPATH_ACCOUNT_LOGICAL_NAME" \
+            --tenant "$UIPATH_TENANT" \
+            --applicationScope "SM.Solutions.Read SM.Solutions.Write"
+
+      - name: Deploy Solution
+        run: |
+          uipcli solution deploy \
+            --solutionName "CityBreak Process" \
+            --solutionVersion "1.0.${{ github.run_number }}" \
+            --targetEnvironment "${{ secrets.UIPATH_TARGET_ENVIRONMENT }}" \
+            --clientId "$UIPATH_CLIENT_ID" \
+            --clientSecret "$UIPATH_CLIENT_SECRET" \
+            --accountName "$UIPATH_ACCOUNT_LOGICAL_NAME" \
+            --tenant "$UIPATH_TENANT" \
+            --applicationScope "SM.Solutions.Read SM.Solutions.Write"
+
+      - name: Activate Deployment
+        run: |
+          uipcli solution deploy-activate \
+            --solutionName "CityBreak Process" \
+            --solutionVersion "1.0.${{ github.run_number }}" \
+            --targetEnvironment "${{ secrets.UIPATH_TARGET_ENVIRONMENT }}" \
+            --clientId "$UIPATH_CLIENT_ID" \
+            --clientSecret "$UIPATH_CLIENT_SECRET" \
+            --accountName "$UIPATH_ACCOUNT_LOGICAL_NAME" \
+            --tenant "$UIPATH_TENANT" \
+            --applicationScope "SM.Solutions.Read SM.Solutions.Write"
+
+      - name: Publish Summary
+        if: always()
+        run: |
+          echo "## UiPath Solution Publishing Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Solution: CityBreak Process" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: 1.0.${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Environment: ${{ secrets.UIPATH_TARGET_ENVIRONMENT }}" >> $GITHUB_STEP_SUMMARY
