@@ -116,7 +116,7 @@ jobs:
           mkdir -p ./packages
           uipcli solution download-package "CityBreak Process" \
             -v "${{ needs.deploy-staging.outputs.package-version }}" \
-            --output ./packages \
+            -d ./packages \
             -U "${{ vars.ORCHESTRATOR_URL }}" \
             -T "${{ vars.ORCHESTRATOR_TENANT }}" \
             -A "${{ vars.ORG_NAME }}" \
@@ -131,11 +131,11 @@ jobs:
           PACKAGE_FILE=$(find ./packages -name "*.zip" | head -1)
           echo "Uploading package to Production: $PACKAGE_FILE"
           uipcli solution upload-package "$PACKAGE_FILE" \
-            -U "${{ vars.PROD_ORCHESTRATOR_URL }}" \
+            -U "${{ vars.ORCHESTRATOR_URL }}" \
             -T "${{ vars.PROD_ORCHESTRATOR_TENANT }}" \
-            -A "${{ vars.PROD_ORG_NAME }}" \
-            -I "${{ secrets.PROD_EXTERNAL_APP_ID }}" \
-            -S "${{ secrets.PROD_EXTERNAL_APP_SECRET }}" \
+            -A "${{ vars.ORG_NAME }}" \
+            -I "${{ secrets.EXTERNAL_APP_ID }}" \
+            -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Packages Solutions.Packages.Write"
 
       - name: Deploy Solution to Production
@@ -145,21 +145,21 @@ jobs:
             -d "CityBreak-Process-v${{ needs.deploy-staging.outputs.package-version }}" \
             -f "${{ vars.PROD_ORCHESTRATOR_FOLDER }}" \
             --deploymentParentFolder "${{ vars.PROD_DEPLOYMENT_PARENT_FOLDER }}" \
-            -U "${{ vars.PROD_ORCHESTRATOR_URL }}" \
+            -U "${{ vars.ORCHESTRATOR_URL }}" \
             -T "${{ vars.PROD_ORCHESTRATOR_TENANT }}" \
-            -A "${{ vars.PROD_ORG_NAME }}" \
-            -I "${{ secrets.PROD_EXTERNAL_APP_ID }}" \
-            -S "${{ secrets.PROD_EXTERNAL_APP_SECRET }}" \
+            -A "${{ vars.ORG_NAME }}" \
+            -I "${{ secrets.EXTERNAL_APP_ID }}" \
+            -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
 
       - name: Activate Production Deployment
         run: |
           uipcli solution deploy-activate "CityBreak-Process-v${{ needs.deploy-staging.outputs.package-version }}" \
-            -U "${{ vars.PROD_ORCHESTRATOR_URL }}" \
+            -U "${{ vars.ORCHESTRATOR_URL }}" \
             -T "${{ vars.PROD_ORCHESTRATOR_TENANT }}" \
-            -A "${{ vars.PROD_ORG_NAME }}" \
-            -I "${{ secrets.PROD_EXTERNAL_APP_ID }}" \
-            -S "${{ secrets.PROD_EXTERNAL_APP_SECRET }}" \
+            -A "${{ vars.ORG_NAME }}" \
+            -I "${{ secrets.EXTERNAL_APP_ID }}" \
+            -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
 
       - name: Production Summary
@@ -168,6 +168,7 @@ jobs:
           echo "## Production Deployment Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Solution: CityBreak Process" >> $GITHUB_STEP_SUMMARY
           echo "- Version: ${{ needs.deploy-staging.outputs.package-version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ vars.ORCHESTRATOR_URL }}" >> $GITHUB_STEP_SUMMARY
           echo "- Tenant: ${{ vars.PROD_ORCHESTRATOR_TENANT }}" >> $GITHUB_STEP_SUMMARY
           echo "- Parent Folder: ${{ vars.PROD_DEPLOYMENT_PARENT_FOLDER }}" >> $GITHUB_STEP_SUMMARY
           echo "- Deployment Folder: ${{ vars.PROD_ORCHESTRATOR_FOLDER }}" >> $GITHUB_STEP_SUMMARY
