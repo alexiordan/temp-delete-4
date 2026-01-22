@@ -10,6 +10,11 @@
       "Id": "e6ea0110-16cb-4479-a1df-78e9a2c5f114",
       "Type": "Agent",
       "ProjectRelativePath": "DemoAgent/project.uiproj"
+    },
+    {
+      "Id": "39ad6e08-89d1-4ee9-9bc3-00b51abc4ef4",
+      "Type": "Agent",
+      "ProjectRelativePath": "Weather-agent/project.uiproj"
     }
   ]
 }
