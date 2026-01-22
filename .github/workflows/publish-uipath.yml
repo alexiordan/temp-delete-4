@@ -51,7 +51,8 @@ jobs:
           uipcli solution deploy "CityBreak Process" \
             -v "1.0.${{ github.run_number }}" \
             -d "CityBreak-Process-v1.0.${{ github.run_number }}" \
-            -f "${{ secrets.ORCHESTRATOR_FOLDER }}" \
+            -f "${{ secrets.DEPLOYMENT_FOLDER_NAME }}" \
+            --deploymentParentFolder "${{ secrets.DEPLOYMENT_PARENT_FOLDER }}" \
             -U "${{ secrets.ORCHESTRATOR_URL }}" \
             -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
             -A "${{ secrets.ORG_NAME }}" \
@@ -75,4 +76,5 @@ jobs:
           echo "## UiPath Solution Publishing Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Solution: CityBreak Process" >> $GITHUB_STEP_SUMMARY
           echo "- Version: 1.0.${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Folder: ${{ secrets.ORCHESTRATOR_FOLDER }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Parent Folder: ${{ secrets.DEPLOYMENT_PARENT_FOLDER }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Deployment Folder: ${{ secrets.DEPLOYMENT_FOLDER_NAME }}" >> $GITHUB_STEP_SUMMARY
