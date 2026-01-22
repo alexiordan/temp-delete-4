@@ -39,9 +39,9 @@ jobs:
           PACKAGE_FILE=$(find ./packages -name "*.zip" | head -1)
           echo "Uploading package: $PACKAGE_FILE"
           uipcli solution upload-package "$PACKAGE_FILE" \
-            -U "${{ secrets.ORCHESTRATOR_URL }}" \
-            -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
-            -A "${{ secrets.ORG_NAME }}" \
+            -U "${{ vars.ORCHESTRATOR_URL }}" \
+            -T "${{ vars.ORCHESTRATOR_TENANT }}" \
+            -A "${{ vars.ORG_NAME }}" \
             -I "${{ secrets.EXTERNAL_APP_ID }}" \
             -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Packages Solutions.Packages.Write"
@@ -51,11 +51,11 @@ jobs:
           uipcli solution deploy "CityBreak Process" \
             -v "1.0.${{ github.run_number }}" \
             -d "CityBreak-Process-v1.0.${{ github.run_number }}" \
-            -f "${{ secrets.DEPLOYMENT_FOLDER_NAME }}" \
-            --deploymentParentFolder "${{ secrets.DEPLOYMENT_PARENT_FOLDER }}" \
-            -U "${{ secrets.ORCHESTRATOR_URL }}" \
-            -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
-            -A "${{ secrets.ORG_NAME }}" \
+            -f "${{ vars.ORCHESTRATOR_FOLDER }}" \
+            --deploymentParentFolder "${{ vars.DEPLOYMENT_PARENT_FOLDER }}" \
+            -U "${{ vars.ORCHESTRATOR_URL }}" \
+            -T "${{ vars.ORCHESTRATOR_TENANT }}" \
+            -A "${{ vars.ORG_NAME }}" \
             -I "${{ secrets.EXTERNAL_APP_ID }}" \
             -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
@@ -63,9 +63,9 @@ jobs:
       - name: Activate Deployment
         run: |
           uipcli solution deploy-activate "CityBreak-Process-v1.0.${{ github.run_number }}" \
-            -U "${{ secrets.ORCHESTRATOR_URL }}" \
-            -T "${{ secrets.ORCHESTRATOR_TENANT }}" \
-            -A "${{ secrets.ORG_NAME }}" \
+            -U "${{ vars.ORCHESTRATOR_URL }}" \
+            -T "${{ vars.ORCHESTRATOR_TENANT }}" \
+            -A "${{ vars.ORG_NAME }}" \
             -I "${{ secrets.EXTERNAL_APP_ID }}" \
             -S "${{ secrets.EXTERNAL_APP_SECRET }}" \
             --applicationScope "AutomationSolutions Solutions.Deployments Solutions.Deployments.Read Solutions.Deployments.Write Solutions.Packages Solutions.Packages.Read Solutions.Packages.Write"
@@ -76,5 +76,5 @@ jobs:
           echo "## UiPath Solution Publishing Summary" >> $GITHUB_STEP_SUMMARY
           echo "- Solution: CityBreak Process" >> $GITHUB_STEP_SUMMARY
           echo "- Version: 1.0.${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Parent Folder: ${{ secrets.DEPLOYMENT_PARENT_FOLDER }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Deployment Folder: ${{ secrets.DEPLOYMENT_FOLDER_NAME }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Parent Folder: ${{ vars.DEPLOYMENT_PARENT_FOLDER }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Deployment Folder: ${{ vars.ORCHESTRATOR_FOLDER }}" >> $GITHUB_STEP_SUMMARY
