@@ -60,7 +60,7 @@ jobs:
         run: |
           uipcli solution deploy "CityBreak Process" \
             -v "${{ steps.set-version.outputs.version }}" \
-            -d "CityBreak-Process-v${{ steps.set-version.outputs.version }}" \
+            -d "CityBreak-Process-Staging" \
             -f "${{ vars.ORCHESTRATOR_FOLDER }}" \
             --deploymentParentFolder "${{ vars.DEPLOYMENT_PARENT_FOLDER }}" \
             -U "${{ vars.ORCHESTRATOR_URL }}" \
@@ -72,7 +72,7 @@ jobs:
 
       - name: Activate Staging Deployment
         run: |
-          uipcli solution deploy-activate "CityBreak-Process-v${{ steps.set-version.outputs.version }}" \
+          uipcli solution deploy-activate "CityBreak-Process-Staging" \
             -U "${{ vars.ORCHESTRATOR_URL }}" \
             -T "${{ vars.ORCHESTRATOR_TENANT }}" \
             -A "${{ vars.ORG_NAME }}" \
@@ -142,7 +142,7 @@ jobs:
         run: |
           uipcli solution deploy "CityBreak Process" \
             -v "${{ needs.deploy-staging.outputs.package-version }}" \
-            -d "CityBreak-Process-v${{ needs.deploy-staging.outputs.package-version }}" \
+            -d "CityBreak-Process-Production" \
             -f "${{ vars.PROD_ORCHESTRATOR_FOLDER }}" \
             --deploymentParentFolder "${{ vars.PROD_DEPLOYMENT_PARENT_FOLDER }}" \
             -U "${{ vars.ORCHESTRATOR_URL }}" \
@@ -154,7 +154,7 @@ jobs:
 
       - name: Activate Production Deployment
         run: |
-          uipcli solution deploy-activate "CityBreak-Process-v${{ needs.deploy-staging.outputs.package-version }}" \
+          uipcli solution deploy-activate "CityBreak-Process-Production" \
             -U "${{ vars.ORCHESTRATOR_URL }}" \
             -T "${{ vars.PROD_ORCHESTRATOR_TENANT }}" \
             -A "${{ vars.ORG_NAME }}" \
