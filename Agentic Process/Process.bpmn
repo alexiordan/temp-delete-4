@@ -58,7 +58,9 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=js:true</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="edge_nL98nF" sourceRef="Activity_APfqHE" targetRef="Event_5EhWln" />
-    <bpmn:sequenceFlow id="edge_XiY2R4" sourceRef="Gateway_A5aSSB" targetRef="Event_5EhWln" />
+    <bpmn:sequenceFlow id="edge_XiY2R4" sourceRef="Gateway_A5aSSB" targetRef="Event_5EhWln">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=false</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
