@@ -9,29 +9,16 @@
         <uipath:entryPointId value="c31505a0-1801-489f-9c8c-9628d58c0f74" />
       </bpmn:extensionElements>
       <bpmn:outgoing>edge_Event_start-Activity_NPAAyU</bpmn:outgoing>
-      <bpmn:outgoing>edge_Event_start-Activity_QgR2Ct</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:task id="Activity_NPAAyU" name="original flow">
+    <bpmn:task id="Activity_NPAAyU" name="Propose Cities">
       <bpmn:incoming>edge_Event_start-Activity_NPAAyU</bpmn:incoming>
       <bpmn:outgoing>edge_Activity_NPAAyU-Event_5EhWln</bpmn:outgoing>
     </bpmn:task>
     <bpmn:endEvent id="Event_5EhWln">
       <bpmn:incoming>edge_Activity_NPAAyU-Event_5EhWln</bpmn:incoming>
-      <bpmn:incoming>edge_dnK5ll</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:task id="Activity_QgR2Ct" name="Alternative flow">
-      <bpmn:incoming>edge_Event_start-Activity_QgR2Ct</bpmn:incoming>
-      <bpmn:outgoing>edge_Activity_QgR2Ct-Activity_38qArA</bpmn:outgoing>
-    </bpmn:task>
-    <bpmn:task id="Activity_38qArA" name="resulting action">
-      <bpmn:incoming>edge_Activity_QgR2Ct-Activity_38qArA</bpmn:incoming>
-      <bpmn:outgoing>edge_dnK5ll</bpmn:outgoing>
-    </bpmn:task>
     <bpmn:sequenceFlow id="edge_Event_start-Activity_NPAAyU" sourceRef="Event_start" targetRef="Activity_NPAAyU" />
     <bpmn:sequenceFlow id="edge_Activity_NPAAyU-Event_5EhWln" sourceRef="Activity_NPAAyU" targetRef="Event_5EhWln" />
-    <bpmn:sequenceFlow id="edge_Event_start-Activity_QgR2Ct" sourceRef="Event_start" targetRef="Activity_QgR2Ct" />
-    <bpmn:sequenceFlow id="edge_dnK5ll" sourceRef="Activity_38qArA" targetRef="Event_5EhWln" />
-    <bpmn:sequenceFlow id="edge_Activity_QgR2Ct-Activity_38qArA" sourceRef="Activity_QgR2Ct" targetRef="Activity_38qArA" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1">
@@ -53,18 +40,6 @@
           <dc:Bounds x="492" y="241" width="36" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S_Activity_QgR2Ct" bpmnElement="Activity_QgR2Ct">
-        <dc:Bounds x="321" y="463" width="100" height="80" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="321" y="548" width="100" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="S_Activity_38qArA" bpmnElement="Activity_38qArA">
-        <dc:Bounds x="496" y="463" width="100" height="80" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="496" y="548" width="100" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_edge_Event_start-Activity_NPAAyU" bpmnElement="edge_Event_start-Activity_NPAAyU">
         <di:waypoint x="296" y="218" />
         <di:waypoint x="344" y="218" />
@@ -72,22 +47,6 @@
       <bpmndi:BPMNEdge id="BPMNEdge_edge_Activity_NPAAyU-Event_5EhWln" bpmnElement="edge_Activity_NPAAyU-Event_5EhWln">
         <di:waypoint x="444" y="218" />
         <di:waypoint x="492" y="218" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_edge_Event_start-Activity_QgR2Ct" bpmnElement="edge_Event_start-Activity_QgR2Ct">
-        <di:waypoint x="278" y="236" />
-        <di:waypoint x="278" y="503" />
-        <di:waypoint x="321" y="503" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_edge_dnK5ll" bpmnElement="edge_dnK5ll">
-        <di:waypoint x="596" y="503" />
-        <di:waypoint x="616" y="503" />
-        <di:waypoint x="616" y="370" />
-        <di:waypoint x="510" y="370" />
-        <di:waypoint x="510" y="236" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_edge_Activity_QgR2Ct-Activity_38qArA" bpmnElement="edge_Activity_QgR2Ct-Activity_38qArA">
-        <di:waypoint x="421" y="503" />
-        <di:waypoint x="496" y="503" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
