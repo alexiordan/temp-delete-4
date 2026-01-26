@@ -1,4 +1,28 @@
 {
   "version": "2.0",
-  "resources": []
+  "resources": [
+    {
+      "resource": "process",
+      "key": "DemoAgent",
+      "id": "processDemoAgent",
+      "value": {
+        "folderPath": {
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "DemoAgent",
+          "isExpression": false,
+          "displayName": "Process name"
+        }
+      },
+      "metadata": {
+        "ActivityName": "Validate city",
+        "BindingsVersion": "2.2",
+        "DisplayLabel": "name",
+        "SolutionsSupport": "true",
+        "subType": "Agent"
+      }
+    }
+  ]
 }
